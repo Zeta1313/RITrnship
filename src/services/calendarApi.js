@@ -14,3 +14,26 @@ export async function getCalendars(accessToken) {
 
     return await response.json();
 }
+
+export async function getEvents(accessToken, calendarId) {
+    const timeMin = new Date().toISOString();
+
+    const url =
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events` +
+        `?singleEvents=true` +
+        `&orderBy=startTime` +
+        `&timeMin=${encodeURIComponent(timeMin)}` +
+        `&maxResults=20`;
+
+    const response = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`Google API Error: ${response.status}`);
+    }
+
+    return await response.json();
+}
