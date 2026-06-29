@@ -2,35 +2,69 @@ import { useState } from "react";
 import Login from "./components/Login";
 import { getCalendars } from "./services/calendarApi";
 
-async function handleLogin(token) {
-    setAccessToken(token);
-
-    try {
-        const calendars = await getCalendars(token);
-
-        if (!calendars.items || calendars.items.length === 0) {
-            console.log("No calendars found for this account.");
-            return;
-        }
-
-        console.log("Calendars:");
-        console.log(calendars.items);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 function App() {
-    const [user, setUser] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+    const [calendars, setCalendars] = useState([]);
+    const [message, setMessage] = useState("");
+
+    async function handleLogin(token) {
+        setAccessToken(token);
+
+        try {
+            const response = await getCalendars(token);
+
+            if (!response.items || response.items.length === 0) {
+                setMessage("This Google account doesn't have any calendars.");
+                setCalendars([]);
+                return;
+            }
+
+            setCalendars(response.items);
+            setMessage(`Found ${response.items.length} calendar(s).`);
+
+            console.log("Calendars:");
+            console.log(response.items);
+        } catch (error) {
+            setCalendars([]);
+            setMessage("Unable to retrieve calendars.");
+            console.error(error);
+        }
+    }
 
     return (
-        <>
-            {!user ? (
-                <Login onSuccess={setUser} />
+        <div>
+            <h1>Calendar Task Manager</h1>
+
+            {!accessToken ? (
+                <Login onSuccess={handleLogin} />
             ) : (
-                <h2>Logged In!</h2>
+                <p>Logged in!</p>
             )}
-        </>
+
+            {message && <p>{message}</p>}
+
+            {calendars.length > 0 && (
+                <>
+                    <h2>Your Calendars</h2>
+
+                    <ul>
+                        {calendars.map((calendar) => (
+                            <li key={calendar.id}>
+                                <strong>{calendar.summary}</strong>
+
+                                <br />
+
+                                {calendar.primary ? "Primary Calendar" : "Secondary Calendar"}
+
+                                <br />
+
+                                <small>{calendar.id}</small>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </div>
     );
 }
 
