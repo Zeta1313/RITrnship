@@ -41,6 +41,16 @@ function Navbar() {
                 >
                     AI Prompt
                 </NavLink>
+
+                <NavLink
+                    to="/Settings"
+                    style={({ isActive }) => ({
+                        textDecoration: "none",
+                        fontWeight: isActive ? "bold" : "normal"
+                    })}
+                >
+                    Settings
+                </NavLink>
             </div>
         </nav>
     );

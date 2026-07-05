@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PromptEditor from "../components/PromptEditor";
 import { DEFAULT_PROMPT } from "../prompts/defaultPrompt";
+import { AuthProvider, useAuth } from "../services/AuthContext";
 
 function PromptManager() {
     const [prompt, setPrompt] = useState(DEFAULT_PROMPT);
     const [savedMessage, setSavedMessage] = useState("");
+    const { accessToken, setAccessToken } = useAuth();
 
     useEffect(() => {
         const storedPrompt = localStorage.getItem("llmPrompt");

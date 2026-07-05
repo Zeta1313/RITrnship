@@ -4,9 +4,10 @@ import CalendarList from "../components/CalendarList";
 import TaskList from "../components/TaskList";
 import { getCalendars, getEvents } from "../services/calendarApi";
 import { normalizeEvents } from "../utils/normalizeEvents";
+import { AuthProvider, useAuth } from "../services/AuthContext";
 
 function Dashboard() {
-    const [accessToken, setAccessToken] = useState(null);
+    const { accessToken, setAccessToken } = useAuth();
     const [calendars, setCalendars] = useState([]);
     const [selectedCalendar, setSelectedCalendar] = useState(null);
     const [tasks, setTasks] = useState([]);
