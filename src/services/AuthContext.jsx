@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const CalendarContext = createContext();
 
-export function AuthProvider({ children }) {
-    const [accessToken, setAccessToken] = useState(() => {
-        return sessionStorage.getItem("accessToken") || null;
-    });
+export function CalendarProvider({ children }) {
+    const [accessToken, setAccessToken] = useState(() => sessionStorage.getItem("accessToken") || null);
+    const [calendars, setCalendars] = useState([]);
+    const [selectedCalendar, setSelectedCalendar] = useState(null);
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         if (accessToken) {
@@ -17,22 +18,19 @@ export function AuthProvider({ children }) {
 
     function logout() {
         setAccessToken(null);
+        setCalendars([]);
+        setSelectedCalendar(null);
+        setTasks([]);
         sessionStorage.removeItem("accessToken");
     }
 
     return (
-        <AuthContext.Provider
-            value={{
-                accessToken,
-                setAccessToken,
-                logout
-            }}
-        >
+        <CalendarContext.Provider value={{ accessToken, setAccessToken, calendars, setCalendars, selectedCalendar, setSelectedCalendar, tasks, setTasks, logout }}>
             {children}
-        </AuthContext.Provider>
+        </CalendarContext.Provider>
     );
 }
 
-export function useAuth() {
-    return useContext(AuthContext);
+export function useCalendar() {
+    return useContext(CalendarContext);
 }

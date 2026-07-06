@@ -4,13 +4,10 @@ import CalendarList from "../components/CalendarList";
 import TaskList from "../components/TaskList";
 import { getCalendars, getEvents } from "../services/calendarApi";
 import { normalizeEvents } from "../utils/normalizeEvents";
-import { AuthProvider, useAuth } from "../services/AuthContext";
+import { useCalendar } from "../services/AuthContext";
 
 function Dashboard() {
-    const { accessToken, setAccessToken } = useAuth();
-    const [calendars, setCalendars] = useState([]);
-    const [selectedCalendar, setSelectedCalendar] = useState(null);
-    const [tasks, setTasks] = useState([]);
+    const { accessToken, setAccessToken, calendars, setCalendars, selectedCalendar, setSelectedCalendar, tasks, setTasks } = useCalendar();
     const [message, setMessage] = useState("");
 
     async function handleLogin(token) {
@@ -58,11 +55,7 @@ function Dashboard() {
 
             {message && <p>{message}</p>}
 
-            <CalendarList
-                calendars={calendars}
-                selectedCalendar={selectedCalendar}
-                onSelect={handleCalendarSelect}
-            />
+            <CalendarList calendars={calendars} selectedCalendar={selectedCalendar} onSelect={handleCalendarSelect} />
 
             <TaskList tasks={tasks} />
         </div>

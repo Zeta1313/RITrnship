@@ -6,6 +6,7 @@ import Layout from "./Layout";
 
 function App() {
     return (
+        <BrowserRouter>
             <Routes>
                 <Route element={<Layout />}>
                     <Route path="/" element={<Dashboard />} />
@@ -13,6 +14,7 @@ function App() {
                     <Route path="/Settings" element={<Settings />} />
                 </Route>
             </Routes>
+        </BrowserRouter>
     );
 }
 

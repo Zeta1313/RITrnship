@@ -1,7 +1,7 @@
-import { AuthProvider, useAuth } from "../services/AuthContext";
+import { useCalendar } from "../services/AuthContext";
 
 function Settings() {
-    const { logout } = useAuth();
+    const { logout } = useCalendar();
     return (
         <div>
             <h1>Settings</h1>
