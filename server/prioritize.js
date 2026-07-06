@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
             });
         }
 
-        if (!tasks || !Array.isArray(tasks)) {
+        if (!Array.isArray(tasks) || tasks.length === 0) {
             return res.status(400).json({
-                error: "Missing task list."
+                error: "Task list must contain at least one task."
             });
         }
 
