@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../components/Login";
 import CalendarList from "../components/CalendarList";
 import TaskList from "../components/TaskList";
@@ -10,9 +10,18 @@ function Dashboard() {
     const { accessToken, setAccessToken, calendars, setCalendars, selectedCalendar, setSelectedCalendar, tasks, setTasks } = useCalendar();
     const [message, setMessage] = useState("");
 
+    useEffect(() => {
+        if (accessToken && calendars.length === 0) {
+            loadCalendars(accessToken);
+        }
+    }, [accessToken]);
+
     async function handleLogin(token) {
         setAccessToken(token);
+        await loadCalendars(token);
+    }
 
+    async function loadCalendars(token) {
         try {
             const response = await getCalendars(token);
 
