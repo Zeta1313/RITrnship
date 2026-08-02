@@ -7,11 +7,21 @@ import { normalizeEvents } from "../utils/normalizeEvents";
 import { useCalendar } from "../services/AuthContext";
 import PrioritizeButton from "../components/PrioButton";
 import PriorityList from "../components/PrioList";
-import { prioritizeTasks } from "../services/API";
+import { prioritizeTasks } from "../services/llmApi";
 import { DEFAULT_PROMPT } from "../prompts/defaultPrompt";
 
 function Dashboard() {
-    const { accessToken, setAccessToken, calendars, setCalendars, selectedCalendar, setSelectedCalendar, tasks, setTasks } = useCalendar();
+    const {
+        accessToken,
+        setAccessToken,
+        calendars,
+        setCalendars,
+        selectedCalendar,
+        setSelectedCalendar,
+        tasks,
+        setTasks
+    } = useCalendar();
+
     const [message, setMessage] = useState("");
     const [priorities, setPriorities] = useState([]);
     const [prioritizing, setPrioritizing] = useState(false);
@@ -81,33 +91,75 @@ function Dashboard() {
     }
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Calendar Task Manager</h1>
+        <main className="page stack-lg">
+            <header className="page-header">
+                <h1>Calendar Task Manager</h1>
 
-            {!accessToken ? (
-                <Login onSuccess={handleLogin} />
-            ) : (
-                <p>Logged In</p>
-            )}
+                {!accessToken ? (
+                    <Login onSuccess={handleLogin} />
+                ) : (
+                    <div className="alert alert-success">
+                        Logged in successfully.
+                    </div>
+                )}
 
-            {message && <p>{message}</p>}
+                {message && (
+                    <div className="alert alert-info">
+                        {message}
+                    </div>
+                )}
 
-            <CalendarList calendars={calendars} selectedCalendar={selectedCalendar} onSelect={handleCalendarSelect} />
+                {priorityError && (
+                    <div className="alert alert-error">
+                        {priorityError}
+                    </div>
+                )}
+            </header>
 
-            <TaskList tasks={tasks} />
+            <div className="dashboard-grid">
+                <aside className="stack">
+                    <section className="card">
+                        <h2>Calendars</h2>
 
-            {tasks.length > 0 && (
-                <PrioritizeButton
-                    onPrioritize={handlePrioritize}
-                    disabled={tasks.length === 0}
-                    loading={prioritizing}
-                />
-            )}
+                        <CalendarList
+                            calendars={calendars}
+                            selectedCalendar={selectedCalendar}
+                            onSelect={handleCalendarSelect}
+                        />
+                    </section>
 
-            {priorityError && <p>{priorityError}</p>}
+                    <section className="card">
+                        <h2>AI Prioritization</h2>
 
-            <PriorityList priorities={priorities} />
-        </div>
+                        {tasks.length > 0 ? (
+                            <PrioritizeButton
+                                onPrioritize={handlePrioritize}
+                                disabled={prioritizing}
+                                loading={prioritizing}
+                            />
+                        ) : (
+                            <p>Select a calendar to begin.</p>
+                        )}
+                    </section>
+                </aside>
+
+                <section className="stack">
+                    <div className="card">
+                        <h2>Tasks</h2>
+
+                        <TaskList tasks={tasks} />
+                    </div>
+
+                    {priorities.length > 0 && (
+                        <div className="card">
+                            <h2>Prioritized Tasks</h2>
+
+                            <PriorityList priorities={priorities} />
+                        </div>
+                    )}
+                </section>
+            </div>
+        </main>
     );
 }
 

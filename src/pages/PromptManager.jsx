@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PromptEditor from "../components/PromptEditor";
 import { DEFAULT_PROMPT } from "../prompts/defaultPrompt";
-import { useCalendar } from "../services/AuthContext";
 
 function PromptManager() {
     const [prompt, setPrompt] = useState(DEFAULT_PROMPT);
     const [savedMessage, setSavedMessage] = useState("");
-    const { accessToken, setAccessToken } = useCalendar();
 
     useEffect(() => {
         const storedPrompt = localStorage.getItem("llmPrompt");
@@ -37,61 +35,59 @@ function PromptManager() {
     }
 
     return (
-        <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
-            <h1>AI Prompt Configuration</h1>
+        <main className="page stack-lg">
+            <header className="page-header">
+                <h1>AI Prompt Configuration</h1>
 
-            <p>
-                This prompt is sent to the language model before your calendar
-                tasks are appended.
-            </p>
-
-            <PromptEditor
-                prompt={prompt}
-                onChange={setPrompt}
-            />
-
-            <div style={{ marginTop: "2rem" }}>
-                <button onClick={handleSave}>
-                    Save Prompt
-                </button>
-
-                <button
-                    onClick={handleReset}
-                    style={{ marginLeft: "1rem" }}
-                >
-                    Reset to Default
-                </button>
-
-                <Link
-                    to="/"
-                    style={{ marginLeft: "1rem" }}
-                >
-                    Return to Dashboard
-                </Link>
-            </div>
+                <p>
+                    This prompt is sent to the language model before your
+                    calendar tasks are appended.
+                </p>
+            </header>
 
             {savedMessage && (
-                <p style={{ marginTop: "1rem" }}>
+                <div className="alert alert-success">
                     {savedMessage}
-                </p>
+                </div>
             )}
 
-            <hr style={{ margin: "2rem 0" }} />
+            <section className="card stack">
+                <h2>Prompt Editor</h2>
 
-            <h2>Prompt Preview</h2>
+                <PromptEditor
+                    prompt={prompt}
+                    onChange={setPrompt}
+                />
 
-            <p>
-                The following information will be sent to the language model:
-            </p>
+                <div className="section-actions">
+                    <button onClick={handleSave}>
+                        Save Prompt
+                    </button>
 
-            <pre
-                style={{
-                    whiteSpace: "pre-wrap",
-                    background: "#f4f4f4",
-                    padding: "1rem",
-                    borderRadius: "5px"
-                }}
-            >
+                    <button
+                        className="button-secondary"
+                        onClick={handleReset}
+                    >
+                        Reset to Default
+                    </button>
+
+                    <Link
+                        className="button-secondary"
+                        to="/"
+                    >
+                        Return to Dashboard
+                    </Link>
+                </div>
+            </section>
+
+            <section className="card stack">
+                <h2>Prompt Preview</h2>
+
+                <p>
+                    The following information will be sent to the language model.
+                </p>
+
+                <pre className="prompt-preview">
 {`${prompt}
 
 -------------------------
@@ -105,8 +101,9 @@ Expected Output
 -------------------------
 
 Return the tasks ordered from highest to lowest priority with concise reasoning.`}
-            </pre>
-        </div>
+                </pre>
+            </section>
+        </main>
     );
 }
 
