@@ -4,15 +4,18 @@ export async function prioritizeTasks(prompt, tasks) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            prompt,
-            tasks
-        })
+        body: JSON.stringify({ prompt, tasks })
     });
 
     if (!response.ok) {
         throw new Error(`Server responded with status ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    if (!Array.isArray(data.priorities)) {
+        throw new Error("Server returned an invalid prioritization response.");
+    }
+
+    return data.priorities;
 }

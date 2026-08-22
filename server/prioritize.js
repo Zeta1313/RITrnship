@@ -7,27 +7,29 @@ router.post("/", async (req, res) => {
     try {
         const { prompt, tasks } = req.body;
 
-        if (!prompt) {
-            return res.status(400).json({
-                error: "Missing prompt."
-            });
+        if (typeof prompt !== "string" || !prompt.trim()) {
+            return res.status(400).json({ error: "Prompt must be a non-empty string." });
         }
 
         if (!Array.isArray(tasks) || tasks.length === 0) {
-            return res.status(400).json({
-                error: "Task list must contain at least one task."
-            });
+            return res.status(400).json({ error: "Task list must contain at least one task." });
         }
 
         const priorities = await prioritizeTasks(prompt, tasks);
 
-        res.json(priorities);
+        return res.json({ priorities });
     } catch (error) {
-        console.error(error);
+        console.error("Prioritization error:", error);
 
-        res.status(500).json({
-            error: "Unable to prioritize tasks."
-        });
+        if (error.name === "InvalidPriorityResponseError") {
+            return res.status(502).json({ error: "LLM returned an invalid prioritization response." });
+        }
+
+        if (error.status === 429) {
+            return res.status(429).json({ error: "LLM request was rate limited." });
+        }
+
+        return res.status(500).json({ error: "Unable to prioritize tasks." });
     }
 });
 
