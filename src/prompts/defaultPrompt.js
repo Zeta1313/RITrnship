@@ -15,6 +15,4 @@ For each task include:
 - priority (Critical, High, Medium, or Low)
 - reason
 
-Today's date is ${today}. Use this to help determine the priority of each task.
-
 If there is insufficient information to confidently prioritize a task, explain the uncertainty rather than making unsupported assumptions. Do not create, remove, or modify tasks.`;
