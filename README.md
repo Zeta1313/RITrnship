@@ -14,7 +14,7 @@ This assistant interfaces directly with Google Calendar, sorting the user's curr
 ---
 <h4>Ongoing Development</h4>
 <sub>
-This assistant is under active development. Due to constraints, the Microsoft Copilot side of the program was unable to be tested. As a result, code responsible for communicating with the LLM may not currently function as intended.
+This assistant is under active development. Due to constraints, the Microsoft Copilot side of the program was unable to be tested. As a result, code responsible for communicating with the LLM may not currently function as intended. Seen Agentprompt.md for the in-development Copilot agent.
 </sub>
 <sub>
 Additionally, for **Feature Three** to function properly, the authentication system will require extensive work. Authentication and communication with Google Calendar currently function only while the application is open, meaning attempts to communicate with the assistant through Copilot will currently fail. A complete overhaul of the authentication system is needed to securely persist the user's login state and allow authentication credentials to be refreshed when the user invokes the assistant. Permanently storing an authentication key would introduce a significant security weakness.
