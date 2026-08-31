@@ -1,10 +1,13 @@
+//Passes the prompt and tasks to the OpenAI API for prioritization, and returns the response. Heavily relies on the agent for actual content of the response.
 import OpenAI from "openai";
 
 const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-export async function prioritizeWithOpenAI(finalPrompt) {
+export async function prioritizeWithOpenAI(prompt, tasks) {
+    const finalPrompt = `${prompt}\n\nTasks:\n${JSON.stringify(tasks)}`;
+
     const response = await client.responses.create({
         model: process.env.LLM_MODEL,
         input: finalPrompt,

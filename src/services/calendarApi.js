@@ -1,3 +1,5 @@
+//Handles communication with the Google Calendar API, including fetching calendars and events. It uses the provided access token for authentication.
+//In refactoring of CalendarAPI communication this will likely need heavy changes.
 export async function getCalendars(accessToken) {
     const response = await fetch(
         "https://www.googleapis.com/calendar/v3/users/me/calendarList",

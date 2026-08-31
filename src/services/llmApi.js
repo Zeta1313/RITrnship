@@ -1,3 +1,4 @@
+//Buffer file between the front-end and the server, handles communication with the server's prioritization endpoint.
 export async function prioritizeTasks(prompt, tasks) {
     const response = await fetch("/api/prioritize", {
         method: "POST",

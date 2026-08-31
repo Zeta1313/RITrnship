@@ -1,3 +1,4 @@
+//Overall sever file, establishes routes and delegates to subfiles.
 import "dotenv/config";
 import express from "express";
 import cors from "cors";

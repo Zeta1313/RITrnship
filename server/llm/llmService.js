@@ -1,4 +1,4 @@
-import { buildPrompt } from "../prompts/promptbuilder.js";
+//Checks for faulty input and as well as output from the LLM, and delegates to OpenAPI.js for actual communication with the LLM.
 import { prioritizeWithOpenAI } from "./OpenAPI.js";
 
 const VALID_PRIORITIES = new Set(["Critical", "High", "Medium", "Low"]);
@@ -11,8 +11,7 @@ export class InvalidPriorityResponseError extends Error {
 }
 
 export async function prioritizeTasks(prompt, tasks) {
-    const finalPrompt = buildPrompt(prompt, tasks);
-    const response = await prioritizeWithOpenAI(finalPrompt);
+    const response = await prioritizeWithOpenAI(prompt, tasks);
 
     if (!Array.isArray(response)) {
         throw new InvalidPriorityResponseError("Prioritization response must be an array.");

@@ -1,16 +1,20 @@
-# React + Vite
+# Rochester Institute of Technology Virtual Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A virtual assistant designed to aid neurodivergent students pursuing PhDs in managing their workflows.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This assistant interfaces directly with Google Calendar, sorting the user's current tasks and suggesting what should be accomplished at any given moment. The assistant is designed to interface with Microsoft Copilot, allowing users to access its functionality through natural-language prompts.
 
-## React Compiler
+### Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Feature One** — The assistant accepts a Google login and scans the calendars associated with the account, sorting scheduled tasks and presenting them in order of priority with fully transparent logic.
+- **Feature Two** — The prompt used to sort the user's calendars is fully customizable, allowing users to tailor their experience to the complicated and unique demands of pursuing a PhD. Agent-side code helps prevent malicious interference with the assistant's instructions.
+- **Feature Three** — When fully integrated with Microsoft Copilot, the assistant will no longer require the user to open the application to access its features. Instead, users will be able to invoke the assistant directly through Microsoft Copilot. **This feature is under development**
+---
+<h4>Ongoing Development</h4>
+<sub>
+This assistant is under active development. Due to constraints, the Microsoft Copilot side of the program was unable to be tested. As a result, code responsible for communicating with the LLM may not currently function as intended.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Additionally, for **Feature Three** to function properly, the authentication system will require extensive work. Authentication and communication with Google Calendar currently function only while the application is open, meaning attempts to communicate with the assistant through Copilot will currently fail. A complete overhaul of the authentication system is needed to securely persist the user's login state and allow authentication credentials to be refreshed when the user invokes the assistant. Permanently storing an authentication key would introduce a significant security weakness.
+</sub>

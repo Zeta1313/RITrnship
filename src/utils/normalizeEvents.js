@@ -1,3 +1,4 @@
+//Buffer file to ensure that events fetched from the Google Calendar API are in a consistent format for the rest of the application. It normalizes the event data to include only the necessary fields.
 export function normalizeEvents(events) {
     return events.map((event) => ({
         id: event.id,
